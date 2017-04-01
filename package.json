@@ -8,11 +8,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "exact-target",
+    "sfmc"
   ],
-  "author": "",
-  "license": "",
-  "peerDependencies": {
-    "react-native": "^0.41.2"
-  }
+  "author": "Eric Nograles",
+  "license": "MIT",
+  "repository": "https://github.com/ericnograles/react-native-sfmc-journey-builder.git"
 }
