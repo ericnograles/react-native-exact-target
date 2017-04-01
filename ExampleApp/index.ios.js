@@ -12,7 +12,13 @@ import {
   View
 } from 'react-native';
 
+import ExactTarget from 'react-native-exact-target';
+
 export default class ExampleApp extends Component {
+  componentDidMount() {
+    ExactTarget.initializePushManager('app-id', 'token');
+  }
+
   render() {
     return (
       <View style={styles.container}>
