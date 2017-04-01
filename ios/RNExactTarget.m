@@ -1,4 +1,4 @@
-
+#import <React/RCTLog.h>
 #import "RNExactTarget.h"
 
 @implementation RNExactTarget
