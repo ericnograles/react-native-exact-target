@@ -42,4 +42,8 @@ import RNExactTarget from 'react-native-exact-target';
 // TODO: What to do with the module?
 RNExactTarget;
 ```
+
+## Credits
+
+This library was scaffolded by [create-react-native-library](https://github.com/frostney/react-native-create-library)
   
