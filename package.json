@@ -1,9 +1,19 @@
+
 {
-  "name": "react-native-sfmc-journey-builder",
+  "name": "react-native-exact-target",
   "version": "1.0.0",
-  "description": "React Native bindings to SalesForce Marketing Cloud Journey Builder",
+  "description": "React Native wrappers for the Exact Target SDK by Salesforce Marketing",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": "Eric Nograles",
+  "license": "MIT",
   "repository": "https://github.com/ericnograles/react-native-sfmc-journey-builder.git",
-  "author": "Eric Nograles <grales@gmail.com>",
-  "license": "MIT"
+  "peerDependencies": {
+    "react-native": "^0.41.2"
+  }
 }
