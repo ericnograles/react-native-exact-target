@@ -24,6 +24,10 @@ export default class ExampleApp extends Component {
       enableCloudPages: false,
       enablePIAnalytics: false
     });
+
+    // Should be no-ops, iOS only
+    ExactTarget.resetBadgeCount();
+    ExactTarget.shouldDisplayAlertViewIfPushReceived(true);
   }
 
   render() {

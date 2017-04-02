@@ -121,7 +121,7 @@ import ExactTarget from 'react-native-exact-target';
 
 ...
 
-ExactTarget.displayAlertIfPushIsReceived(true);
+ExactTarget.shouldDisplayAlertViewIfPushReceived(true);
 ```
 
 ## Credits

@@ -1,5 +1,5 @@
 
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 const { RNExactTarget } = NativeModules;
 
@@ -17,5 +17,19 @@ export default {
     });
 
     return RNExactTarget.initializePushManager(configWithDefaults);
+  },
+
+  resetBadgeCount: () => {
+    if (Platform.OS === 'ios') {
+      return RNExactTarget.resetBadgeCount();
+    }
+    return;
+  },
+
+  shouldDisplayAlertViewIfPushReceived: enabled => {
+    if (Platform.OS === 'ios') {
+      return RNExactTarget.shouldDisplayAlertViewIfPushReceived(enabled);
+    }
+    return;
   }
 };

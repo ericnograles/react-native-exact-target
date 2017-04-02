@@ -53,4 +53,15 @@ RCT_EXPORT_METHOD(initializePushManager:(NSDictionary *)etPushConfig)
     }
 }
 
+RCT_EXPORT_METHOD(resetBadgeCount)
+{
+    RCTLogInfo(@"Resetting badge count");
+    [[ETPush pushManager] resetBadgeCount];
+}
+
+RCT_EXPORT_METHOD(shouldDisplayAlertViewIfPushReceived:(BOOL *)enabled) {
+    RCTLogInfo(@"shouldDisplayAlertViewIfPushedReceived %i", enabled);
+    [[ETPush pushManager] shouldDisplayAlertViewIfPushReceived:enabled];
+}
+
 @end
