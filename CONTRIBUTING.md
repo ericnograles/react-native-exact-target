@@ -15,4 +15,6 @@ Please follow the guidelines below.  If you have any questions, please reach out
 
 ## Help Wanted: Core Contributors
 
-As I can only maintain this in my limited spare time, I would love some help from some core contributors.  Please shoot me a message on Twitter and we'll get you the proper access to this repo.
+As I can only maintain this in my limited spare time, I would love some help from some core contributors, especially if you happen to work for SFMC :smile:  
+
+Please shoot me a message on Twitter and we'll get you the proper access to this repo.
