@@ -111,6 +111,7 @@ This repo comes with an ExampleApp that implements the functionality listed belo
 ### Initializing
 
 Typically, you'll want to initialize ExactTarget on the `componentDidMount` of your App.js, like so:
+
     ```jsx
     import ExactTarget from 'react-native-exact-target';
     
