@@ -112,21 +112,21 @@ This repo comes with an ExampleApp that implements the functionality listed belo
 
 Typically, you'll want to initialize ExactTarget on the `componentDidMount` of your App.js, like so:
 
-    ```jsx
-    import ExactTarget from 'react-native-exact-target';
-    
-    componentDidMount() {
-        ExactTarget.initializePushManager({
-              appId: 'your-app-id',
-              accessToken: 'your-app-access-token',
-              enableAnalytics: false,
-              enableLocationServices: false,
-              enableProximityServices: false,
-              enableCloudPages: false,
-              enablePIAnalytics: false
-            });
-    }
-    ```
+```jsx
+import ExactTarget from 'react-native-exact-target';
+
+componentDidMount() {
+    ExactTarget.initializePushManager({
+          appId: 'your-app-id',
+          accessToken: 'your-app-access-token',
+          enableAnalytics: false,
+          enableLocationServices: false,
+          enableProximityServices: false,
+          enableCloudPages: false,
+          enablePIAnalytics: false
+        });
+}
+```
 
 ### Resetting Badge Count (iOS Only)
 
