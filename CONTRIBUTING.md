@@ -4,7 +4,7 @@
 
 Thanks for wanting to contribute to `react-native-exact-target`!  We're looking to constantly improve this library and expose the SFMC community to the wonderful React Native community.
 
-Please follow the guidelines below.  If you have any questions, please reach out to me at [https://twitter.com/grales](my Twitter).
+Please follow the guidelines below.  If you have any questions, please reach out to me at [@grales on Twitter](https://twitter.com/grales).
 
 ## Process
 
