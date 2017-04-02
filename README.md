@@ -18,7 +18,7 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
 
 `$ react-native link react-native-exact-target`
 
-#### Android
+#### Android (Mostly Automatic Install Cont'd.)
 
 1. Open up `android/build.gradle` and modify the `allprojects` section to look like the following:
     ```
