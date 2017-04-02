@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNExactTarget"
-  s.version      = "1.0.0"
+  s.version      = "0.0.1"
   s.summary      = "RNExactTarget"
   s.description  = <<-DESC
                   RNExactTarget

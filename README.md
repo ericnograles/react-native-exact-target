@@ -1,5 +1,14 @@
-
 # react-native-exact-target
+
+## Important Note
+
+This project is still in alpha stages and is not fit for production usage yet. Please stay tuned as we work towards our first RC.
+
+If you're in a crunch and would like to use this, please feel free to fork or contribute.
+
+## Introduction
+
+react-native-exact-target provides bridging functionality to Salesforce Marketing Cloud's Exact Target SDK, aka the Journey Builder for iOS and Journey Builder for Android
 
 ## Getting started
 
@@ -9,8 +18,25 @@
 
 `$ react-native link react-native-exact-target`
 
-### Manual installation
+#### Android
 
+1. Open up `android/build.gradle` and modify the `allprojects` section to look like the following:
+    ```
+    allprojects {
+        repositories {
+            mavenLocal()
+            jcenter()
+            maven {
+                // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+                url "$rootDir/../node_modules/react-native/android"
+            }
+            maven { url "http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/repository" }
+        }
+    }
+    ```
+
+
+### Manual installation
 
 #### iOS
 
@@ -33,14 +59,69 @@
   	```
       compile project(':react-native-exact-target')
   	```
-
+4. Open up `android/build.gradle` and modify the `allprojects` section to look like the following:
+    ```
+    allprojects {
+        repositories {
+            mavenLocal()
+            jcenter()
+            maven {
+                // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+                url "$rootDir/../node_modules/react-native/android"
+            }
+            maven { url "http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/repository" }
+        }
+    }
+    ```
 
 ## Usage
-```javascript
-import RNExactTarget from 'react-native-exact-target';
 
-// TODO: What to do with the module?
-RNExactTarget;
+### Example App
+
+This repo comes with an ExampleApp that implements the functionality listed below. Please feel free to clone the repo and run the ExampleApp to tinker with various settings.
+
+### Registering an App
+
+* Please follow the instructions set forth by the <a href="https://github.com/ericnograles/LearningAppIos/blob/master/README.md#create-your-apps-in-the-app-center" target="_blank">Salesforce Marketing Cloud iOS Learning App</a>.
+  * Take note of the resulting App ID and Access Token
+
+### Initializing
+
+Typically, you'll want to initialize ExactTarget on the `componentDidMount` of your App.js, like so:
+    ```jsx
+    import ExactTarget from 'react-native-exact-target';
+    
+    componentDidMount() {
+        ExactTarget.initializePushManager({
+              appId: 'your-app-id',
+              accessToken: 'your-app-access-token',
+              enableAnalytics: false,
+              enableLocationServices: false,
+              enableProximityServices: false,
+              enableCloudPages: false,
+              enablePIAnalytics: false
+            });
+    }
+    ```
+
+### Resetting Badge Count (iOS Only)
+
+```jsx
+import ExactTarget from 'react-native-exact-target';
+
+...
+
+ExactTarget.resetBadgeCount();
+```
+
+### Automatically Display an Alert if a Push Notification is Received (iOS Only)
+
+```jsx
+import ExactTarget from 'react-native-exact-target';
+
+...
+
+ExactTarget.displayAlertIfPushIsReceived(true);
 ```
 
 ## Credits
