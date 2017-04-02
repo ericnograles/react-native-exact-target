@@ -8,7 +8,7 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
 
 This project is still in alpha stages and is not fit for production usage yet. Please stay tuned as we work towards our first RC.
 
-If you're in a crunch and would like to use this, please feel free to fork or [contribute](CONTRIBUTING.MD).
+If you're in a crunch and would like to use this, please feel free to fork or [contribute](CONTRIBUTING.md).
 
 ## Getting started
 
