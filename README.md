@@ -1,14 +1,14 @@
 # react-native-exact-target
 
+## Introduction
+
+react-native-exact-target provides bridging functionality to Salesforce Marketing Cloud's Exact Target SDK, aka the [Journey Builder for iOS](http://salesforce-marketingcloud.github.io/JB4A-SDK-iOS/) and [Journey Builder for Android](http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/) without all the fuss of messing with native code!
+
 ## Important Note
 
 This project is still in alpha stages and is not fit for production usage yet. Please stay tuned as we work towards our first RC.
 
-If you're in a crunch and would like to use this, please feel free to fork or contribute.
-
-## Introduction
-
-react-native-exact-target provides bridging functionality to Salesforce Marketing Cloud's Exact Target SDK, aka the [Journey Builder for iOS](http://salesforce-marketingcloud.github.io/JB4A-SDK-iOS/) and [Journey Builder for Android](http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/) without all the fuss of messing with native code!
+If you're in a crunch and would like to use this, please feel free to fork or [contribute](CONTRIBUTING.MD).
 
 ## Getting started
 
