@@ -11,8 +11,21 @@ import {
   Text,
   View
 } from 'react-native';
+import ExactTarget from 'react-native-exact-target';
 
 export default class ExampleApp extends Component {
+  componentDidMount() {
+    ExactTarget.initializePushManager({
+      appId: 'test-app-id-android',
+      accessToken: 'test-access-token-android',
+      enableAnalytics: false,
+      enableLocationServices: false,
+      enableProximityServices: false,
+      enableCloudPages: false,
+      enablePIAnalytics: false
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>

@@ -17,8 +17,8 @@ import ExactTarget from 'react-native-exact-target';
 export default class ExampleApp extends Component {
   componentDidMount() {
     ExactTarget.initializePushManager({
-      appId: 'test-app-id',
-      accessToken: 'test-access-token',
+      appId: 'test-app-id-ios',
+      accessToken: 'test-access-token-ios',
       enableAnalytics: false,
       enableLocationServices: false,
       enableProximityServices: false,

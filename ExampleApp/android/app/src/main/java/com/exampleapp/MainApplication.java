@@ -3,7 +3,8 @@ package com.exampleapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.reactlibrary.RNExactTargetPackage;
+import com.exacttarget.etpushsdk.reactnative.RNExactTargetModule;
+import com.exacttarget.etpushsdk.reactnative.RNExactTargetPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
