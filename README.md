@@ -8,7 +8,7 @@ If you're in a crunch and would like to use this, please feel free to fork or co
 
 ## Introduction
 
-react-native-exact-target provides bridging functionality to Salesforce Marketing Cloud's Exact Target SDK, aka the Journey Builder for iOS and Journey Builder for Android
+react-native-exact-target provides bridging functionality to Salesforce Marketing Cloud's Exact Target SDK, aka the [Journey Builder for iOS](http://salesforce-marketingcloud.github.io/JB4A-SDK-iOS/) and [Journey Builder for Android](http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/) without all the fuss of messing with native code!
 
 ## Getting started
 
@@ -18,7 +18,11 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
 
 `$ react-native link react-native-exact-target`
 
-#### Android (Mostly Automatic Install Cont'd.)
+#### iOS (Continued)
+
+1. Ensure that your app has been provisioned with access to the APN, [as described by the JB4A-SDK instructions on iOS Provisioning](https://github.com/salesforce-marketingcloud/LearningAppIos#0017)
+
+#### Android (Continued)
 
 1. Open up `android/build.gradle` and modify the `allprojects` section to look like the following:
     ```
@@ -35,7 +39,12 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
     }
     ```
 
-
+2. Add the following lines to your app's `AndroidManifest.xml`
+    ```xml
+       <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+       <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    ```
+    
 ### Manual installation
 
 #### iOS
@@ -43,7 +52,8 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
 2. Go to `node_modules` ➜ `react-native-exact-target` and add `RNExactTarget.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNExactTarget.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
+4. Ensure that your app has been provisioned with access to the APN, [as described by the JB4A-SDK instructions on iOS Provisioning](https://github.com/salesforce-marketingcloud/LearningAppIos#0017)
+5. Run your project (`Cmd+R`)
 
 #### Android
 
@@ -73,6 +83,19 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
         }
     }
     ```
+
+5. Add the following lines to your app's `AndroidManifest.xml`
+    ```xml
+       <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+       <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    ```
+
+## Important Notes
+
+### Android
+
+* The Android bridge locks the GMS and Play Services versions to 9.2.0, as that is a constraint of the version of the JB4A-SDK we are using (4.7.1)
+  * We hopefully can sync up with the SFMC/ExactTarget folks to come up with a more elegant way to handle this, but please take note that this project may conflict with such things as `react-native-maps` or anything requiring GMS on Android
 
 ## Usage
 

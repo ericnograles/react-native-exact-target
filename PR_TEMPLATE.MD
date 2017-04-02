@@ -1,5 +1,7 @@
 **Author's Note**: As the great TJ Holowaychuk would say, a PR is not a PR without an animated GIF.  So, they are highly encouraged. :smile:
 
+![Magic](http://i.imgur.com/YsbKHg1.jpg)
+
 ## Overview
 
 This section should describe the work you've performed for your PR.  A quick 2-3 sentence summary at a minimum is expected.
