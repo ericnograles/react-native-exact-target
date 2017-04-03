@@ -101,7 +101,7 @@ If you're in a crunch and would like to use this, please feel free to fork or [c
 
 ### Example App
 
-This repo comes with an ExampleApp that implements the functionality listed below. Please feel free to clone the repo and run the ExampleApp to tinker with various settings.
+[An example RN app](https://github.com/ericnograles/react-native-exact-target-example-app) has been spun up in a separate repo. Please feel free to clone the repo and run the app to tinker with various settings.
 
 ### Registering an App
 
