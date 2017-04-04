@@ -12,7 +12,7 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(initializePushManager:(NSDictionary *)etPushConfig)
+RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)etPushConfig resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSString *appId = [RCTConvert NSString:etPushConfig[@"appId"]];
     NSString *accessToken = [RCTConvert NSString:etPushConfig[@"accessToken"]];
@@ -50,6 +50,10 @@ RCT_EXPORT_METHOD(initializePushManager:(NSDictionary *)etPushConfig)
                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                               otherButtonTitles:nil] show];
         });
+        NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.", appId, accessToken];
+        reject(@"sdk_init_error", errorMessage, nil);
+    } else {
+        resolve(@"successful");
     }
 }
 
