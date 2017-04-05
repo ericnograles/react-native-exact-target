@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 
 // ExactTarget SDK
 import com.exacttarget.etpushsdk.ETAnalytics;
@@ -58,7 +59,7 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
   }
 
   @ReactMethod
-  public void initializePushManager(ReadableMap config) {
+  public void initializePushManager(ReadableMap config, Promise promise) {
     // Grab the application
     this.mainApplication = (Application) reactContext.getApplicationContext();
 
@@ -87,8 +88,10 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
                       .setProximityEnabled(enableProximityServices)
                       .build()
               , this);
+      promise.resolve(true);
     } catch (ETException e) {
       Log.e(TAG, e.getMessage(), e);
+      promise.reject(TAG, e.getMessage());
     }
   }
 
