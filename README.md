@@ -116,19 +116,41 @@ Typically, you'll want to initialize ExactTarget on the `componentDidMount` of y
 import ExactTarget from 'react-native-exact-target';
 
 componentDidMount() {
-    ExactTarget.initializePushManager({
-          appId: 'your-app-id',
-          accessToken: 'your-app-access-token',
-          enableAnalytics: false,
-          enableLocationServices: false,
-          enableProximityServices: false,
-          enableCloudPages: false,
-          enablePIAnalytics: false
-        });
+        ExactTarget
+          .initializePushManager({
+            appId: 'test-app-id-ios',
+            accessToken: 'test-access-token-ios',
+            enableAnalytics: false,
+            enableLocationServices: false,
+            enableProximityServices: false,
+            enableCloudPages: false,
+            enablePIAnalytics: false
+          })
+          .catch(error => {
+            console.log('There has been an error');
+            console.error(error);
+          });
 }
 ```
 
+### Checking if the SDK Was Initialized
+
+There is a convenience function that is exposed to check if the SDK was registered successfully:
+
+```jsx
+import ExactTarget from 'react-native-exact-target';
+
+...
+
+componentDidMount() {
+    let isExactTargetInitialized = ExactTarget.isSDKInitialized();
+}
+
+```
+
 ### Resetting Badge Count (iOS Only)
+
+*Note*: This will no-op if the SDK was not properly initialized or if attempted from Android
 
 ```jsx
 import ExactTarget from 'react-native-exact-target';
@@ -139,6 +161,8 @@ ExactTarget.resetBadgeCount();
 ```
 
 ### Automatically Display an Alert if a Push Notification is Received (iOS Only)
+
+*Note*: This will no-op if the SDK was not properly initialized or if attempted from Android
 
 ```jsx
 import ExactTarget from 'react-native-exact-target';
