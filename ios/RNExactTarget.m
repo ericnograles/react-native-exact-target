@@ -9,7 +9,7 @@ bool hasListeners;
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"ET:REMOTE_NOTIFICATION_RECEIVED", @"ET:LOCAL_NOTIFICATION_RECEIVED"];
+    return @[@"ET:PUSH_NOTIFICATION_RECEIVED", @"ET:LOCAL_NOTIFICATION_RECEIVED"];
 }
 
 - (dispatch_queue_t)methodQueue
@@ -89,7 +89,7 @@ RCT_EXPORT_METHOD(shouldDisplayAlertViewIfPushReceived:(BOOL *)enabled) {
 
 - (void)handleRemoteNotification:(NSDictionary *_Nullable)userInfo {
     if (hasListeners) {
-        [self sendEventWithName:@"ET:REMOTE_NOTIFICATION_RECEIVED" body:userInfo];
+        [self sendEventWithName:@"ET:PUSH_NOTIFICATION_RECEIVED" body:userInfo];
     }
 }
 

@@ -6,12 +6,16 @@ import android.app.Application;
 import android.support.annotation.Nullable;
 import android.content.Context;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 
 // ExactTarget SDK
 import com.exacttarget.etpushsdk.ETAnalytics;
@@ -28,6 +32,7 @@ import com.exacttarget.etpushsdk.data.Attribute;
 import com.exacttarget.etpushsdk.data.Region;
 import com.exacttarget.etpushsdk.event.BeaconResponseEvent;
 import com.exacttarget.etpushsdk.event.GeofenceResponseEvent;
+import com.exacttarget.etpushsdk.event.PushReceivedEvent;
 import com.exacttarget.etpushsdk.event.RegistrationEvent;
 import com.exacttarget.etpushsdk.util.EventBus;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,6 +61,12 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
   public RNExactTargetModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
+  }
+
+  private void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
+    reactContext
+            .getJSModule(RCTNativeAppEventEmitter.class)
+            .emit(eventName, params);
   }
 
   @ReactMethod
@@ -194,6 +205,13 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
       default:
         Log.v(tag, message);
     }
+  }
+
+  @SuppressWarnings("unused, unchecked")
+  public void onEvent(final PushReceivedEvent event) {
+    // TODO: Determine the type of PushReceivedEvent -- e.g. Geofence, Push, Local?
+    WritableMap params = Arguments.fromBundle(event.getPayload());
+    sendEvent((ReactContext) reactContext, "ET:PUSH_NOTIFICATION_RECEIVED", params);
   }
 
   public interface EtPushListener {
