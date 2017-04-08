@@ -5,9 +5,28 @@
 
 @implementation RNExactTarget
 
+bool hasListeners;
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[@"ET:REMOTE_NOTIFICATION_RECEIVED", @"ET:LOCAL_NOTIFICATION_RECEIVED"];
+}
+
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
+}
+
+// Will be called when this module's first listener is added.
+-(void)startObserving {
+    hasListeners = YES;
+    // Set up any upstream listeners or background tasks as necessary
+}
+
+// Will be called when this module's last listener is removed, or on dealloc.
+-(void)stopObserving {
+    hasListeners = NO;
+    // Remove upstream listeners, stop unnecessary background tasks
 }
 
 RCT_EXPORT_MODULE();
@@ -66,6 +85,18 @@ RCT_EXPORT_METHOD(resetBadgeCount)
 RCT_EXPORT_METHOD(shouldDisplayAlertViewIfPushReceived:(BOOL *)enabled) {
     RCTLogInfo(@"shouldDisplayAlertViewIfPushedReceived %i", enabled);
     [[ETPush pushManager] shouldDisplayAlertViewIfPushReceived:enabled];
+}
+
+- (void)handleRemoteNotification:(NSDictionary *_Nullable)userInfo {
+    if (hasListeners) {
+        [self sendEventWithName:@"ET:REMOTE_NOTIFICATION_RECEIVED" body:userInfo];
+    }
+}
+
+- (void)handleLocalNotification:(UILocalNotification *_Nullable)localNotification {
+    if (hasListeners) {
+        [self sendEventWithName:@"ET:LOCAL_NOTIFICATION_RECEIVED" body:localNotification];
+    }
 }
 
 @end
