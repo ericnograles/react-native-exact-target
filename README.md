@@ -148,6 +148,39 @@ componentDidMount() {
 
 ```
 
+### Listening for Events
+
+We expose an `eventEmitter` which a developer can use to listen in on various JB4A-SDK events.  Note that `eventEmitter` will return `null` if the SDK was not properly initialized.
+
+Please be sure to remove listeners on your `componentWillUnmount`.
+
+### Push Notifications
+
+**Note**: This is still unstable and untested. Please use with caution.
+
+```jsx
+import ExactTarget from 'react-native-exact-target';
+
+...
+
+componentDidMount() {
+  this.pushNotificationListener = ExactTarget.eventEmitter.addListener(
+    'ET:PUSH_NOTIFICATION_RECEIVED',
+    (payload) => {
+      // Handle the payload as you see fit
+      console.log(payload);
+    }
+  );
+}
+
+componentWillUnmount() {
+  if (this.pushNotificationListener) {
+    this.pushNotificationListener.remove();
+  }
+}
+
+```
+
 ### Resetting Badge Count (iOS Only)
 
 *Note*: This will no-op if the SDK was not properly initialized or if attempted from Android

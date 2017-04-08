@@ -1,13 +1,23 @@
 
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
 
 const { RNExactTarget } = NativeModules;
+
+const exactTargetEventEmitter = new NativeEventEmitter(RNExactTarget);
 
 let sdkInitialized = false;
 
 export default {
   isSDKInitialized: () => {
     return sdkInitialized;
+  },
+
+  eventEmitter: () => {
+    if (sdkInitialized) {
+      return exactTargetEventEmitter;
+    }
+
+    return null;
   },
 
   initializePushManager: config => {
