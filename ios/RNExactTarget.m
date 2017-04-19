@@ -1,5 +1,15 @@
-#import <React/RCTLog.h>
+#if __has_include("RCTConvert.h")
+#import "RCTConvert.h"
+#else
 #import <React/RCTConvert.h>
+#endif
+
+#if __has_include("RCTLog.h")
+#import "RCTLog.h"
+#else
+#import <React/RCTLog.h>
+#endif
+
 #import "RNExactTarget.h"
 #import "ETPush.h"
 
