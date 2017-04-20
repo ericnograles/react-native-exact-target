@@ -71,14 +71,6 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
                                                        error:&error];
     
     if (!successful) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // something failed in the configureSDKWithAppID call - show what the error is
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed configureSDKWithAppID!", @"Failed configureSDKWithAppID!")
-                                        message:[error localizedDescription]
-                                       delegate:nil
-                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                              otherButtonTitles:nil] show];
-        });
         NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.", appId, accessToken];
         reject(@"sdk_init_error", errorMessage, nil);
     } else {
