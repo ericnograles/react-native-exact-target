@@ -1,7 +1,13 @@
 
 buildscript {
     repositories {
+        mavenLocal()
         jcenter()
+        maven {
+            // For developing the library outside the context of the example app, expect `react-native`
+            // to be installed at `./node_modules`.
+            url "$projectDir/../node_modules/react-native/android"
+        }
     }
 
     dependencies {
@@ -27,8 +33,13 @@ android {
 }
 
 repositories {
-    mavenCentral()
+    mavenLocal()
     maven { url "http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/repository" }
+    maven {
+        // For developing the library outside the context of the example app, expect `react-native`
+        // to be installed at `./node_modules`.
+        url "$projectDir/../node_modules/react-native/android"
+    }
 }
 
 dependencies {
