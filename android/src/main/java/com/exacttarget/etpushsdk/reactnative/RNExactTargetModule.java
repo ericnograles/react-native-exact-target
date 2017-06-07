@@ -57,6 +57,7 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
   private static final LinkedHashSet<EtPushListener> listeners = new LinkedHashSet<>();
   private static ETPush etPush;
   private final ReactApplicationContext reactContext;
+  private boolean enableLocationServices = false;
 
   public RNExactTargetModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -79,10 +80,10 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
     String accessToken = config.getString("accessToken");
     String gcmSenderId = config.getString("gcmSenderId");
     boolean enableAnalytics = config.getBoolean("enableAnalytics");
-    boolean enableLocationServices = config.getBoolean("enableLocationServices");
     boolean enableProximityServices = config.getBoolean("enableProximityServices");
     boolean enableCloudPages = config.getBoolean("enableCloudPages");
     boolean enablePIAnalytics = config.getBoolean("enablePIAnalytics");
+    enableLocationServices = config.getBoolean("enableLocationServices");
 
     // ExactTarget registration
     EventBus.getInstance().register(this);
@@ -138,16 +139,17 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
       }
     }
 
-    // TODO: Re-enable once we figure out Google Map version issues w/ ET and our libraries
-//    String sdkState;
-//    try {
-//      // TODO: Re-enable once we sort out GCM versioning issues
-//      sdkState = ETPush.getInstance().getSDKState();
-//      ETLocationManager.getInstance().startWatchingLocation();
-//    } catch (ETException e) {
-//      sdkState = e.getMessage();
-//    }
-//    Log.v(TAG, sdkState); // Write the current SDK State to the Logs.
+    // TODO: Note that there has been observed issues with the code below, it may crash your Android app
+    if (enableLocationServices) {
+      String sdkState;
+      try {
+        sdkState = ETPush.getInstance().getSDKState();
+        ETLocationManager.getInstance().startWatchingLocation();
+      } catch (ETException e) {
+        sdkState = e.getMessage();
+      }
+      Log.v(TAG, sdkState); // Write the current SDK State to the Logs.
+    }
 
     if (!listeners.isEmpty()) { // Tell our listeners that the SDK is ready for use
       for (EtPushListener listener : listeners) {
