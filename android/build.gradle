@@ -8,6 +8,7 @@ buildscript {
             // to be installed at `./node_modules`.
             url "$projectDir/../node_modules/react-native/android"
         }
+        maven { url "http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/repository" }
     }
 
     dependencies {
