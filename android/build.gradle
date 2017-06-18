@@ -8,6 +8,7 @@ buildscript {
             // to be installed at `./node_modules`.
             url "$projectDir/../node_modules/react-native/android"
         }
+        maven { url "http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/repository" }
     }
 
     dependencies {
@@ -42,6 +43,18 @@ repositories {
     }
 }
 
+allprojects {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+        maven { url "http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/repository" }
+    }
+}
+
 dependencies {
     compile('com.exacttarget.etpushsdk:etsdk:4.7.1@aar') {
         //exclude module: 'android-beacon-library'
@@ -55,6 +68,6 @@ dependencies {
         force = true
     }
     compile "com.android.support:appcompat-v7:23.0.1"
-    compile 'com.facebook.react:react-native:0.38.0'
+    compile 'com.facebook.react:react-native:+'
 }
   
