@@ -8,7 +8,8 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
 
 | **react-native-exact-target** | **React Native** | **JB4ASDK Android** | **JB4ASDK iPhone** |
 | --- | --- | --- | --- |
-| 0.0.9+ | 0.38+ | 4.7.1 | 4.7.0.x | 
+| 0.0.x+ | < 0.40 | 4.7.1 | 4.7.0.x | 
+| 0.1.x+ | >= 0.40 | 4.7.1 | 4.7.0.x |
 
 ## Important Note
 
