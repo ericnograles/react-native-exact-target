@@ -104,6 +104,27 @@ If you're in a crunch and would like to use this, please feel free to fork or [c
 * The Android bridge locks the GMS and Play Services versions to 9.2.0, as that is a constraint of the version of the JB4A-SDK we are using (4.7.1)
   * We hopefully can sync up with the SFMC/ExactTarget folks to come up with a more elegant way to handle this, but please take note that this project may conflict with such things as `react-native-maps` or anything requiring GMS on Android
 
+#### Forcing 9.2.4
+
+In order to force your Android to a specific version of Android GMS to support ETPush SDK 4.7.1, please modify your `android/build.gradle`'s `allprojects` to be as follows.
+
+**NOTE**: This might break other 3rd party dependencies, such as `react-native-maps` or `react-native-google-analytics-bridge` that rely on more modern versions of Android GMS.  We are working on making this more generic, please stay tuned.
+
+```
+allprojects {
+  ...
+  configurations.all {
+          resolutionStrategy {
+              eachDependency { DependencyResolveDetails details ->
+                  if (details.requested.group == 'com.google.android.gms') {
+                      details.useVersion "9.2.0"
+                  }
+              }
+          }
+      }
+}
+```
+
 ## Usage
 
 ### Example App
