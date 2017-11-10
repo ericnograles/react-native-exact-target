@@ -2,6 +2,7 @@
 #import <React/RCTLog.h>
 #import "RNExactTarget.h"
 #import "ETPush.h"
+#import "ETAnalytics.h"
 
 @implementation RNExactTarget
 
@@ -108,6 +109,22 @@ RCT_EXPORT_METHOD(shouldDisplayAlertViewIfPushReceived:(BOOL *)enabled) {
     [[ETPush pushManager] shouldDisplayAlertViewIfPushReceived:enabled];
 }
 
+// Wrapper for ETPush method for post-registration delegate methods
+- (void)didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    [[ETPush pushManager] didRegisterUserNotificationSettings:notificationSettings];
+}
+
+- (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // register device token to SFMC
+    [[ETPush pushManager] registerDeviceToken:deviceToken];
+}
+
+- (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    [[ETPush pushManager] applicationDidFailToRegisterForRemoteNotificationsWithError:error];
+    [ETAnalytics trackPageView:@"data://applicationDidFailToRegisterForRemoteNotificationsWithError" andTitle:[error localizedDescription] andItem:nil andSearch:nil];
+}
+
+// Handlers for received notification
 - (void)handleRemoteNotification:(NSDictionary *_Nullable)userInfo {
     if (hasListeners) {
         [self sendEventWithName:@"ET:PUSH_NOTIFICATION_RECEIVED" body:userInfo];
