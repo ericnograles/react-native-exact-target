@@ -64,6 +64,38 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
         NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.", appId, accessToken];
         reject(@"sdk_init_error", errorMessage, nil);
     } else {
+        /** Register for push notifications - enable all notification types, no categories */
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
+            
+            // Preparing parameters
+            UNAuthorizationOptions authOptions = (UNAuthorizationOptionAlert
+                                                  + UNAuthorizationOptionBadge
+                                                  + UNAuthorizationOptionSound);
+            void (^completionHandler)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
+                NSLog(@"Registered for remote notifications: %d", granted);
+            };
+            
+            // Start registration to APNS to get a device token
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
+                                                                         options:authOptions
+                                                                      categories:nil
+                                                               completionHandler:completionHandler];
+            }
+        }
+        else {
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound |
+                                                    UIUserNotificationTypeAlert
+                                                                                     categories:nil];
+            // Notify the SDK what user notification settings have been selected
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerUserNotificationSettings:settings];
+                [[ETPush pushManager] registerForRemoteNotifications];
+            }
+        }
+        
         resolve(@"successful");
     }
 }
