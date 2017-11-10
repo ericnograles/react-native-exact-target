@@ -48,10 +48,11 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
     NSError *error = nil;
     
     // Debug flags
-    #ifdef DEBUG
+#ifdef DEBUG
     [ETPush setETLoggerToRequiredState:YES];
-    #endif
+#endif
     
+    // Initialize SDK with SFMC AppID and AccessToken
     successful = [[ETPush pushManager] configureSDKWithAppID:appId
                                               andAccessToken:accessToken
                                                withAnalytics:withAnalytics
@@ -77,12 +78,10 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
             };
             
             // Start registration to APNS to get a device token
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
-                                                                         options:authOptions
-                                                                      categories:nil
-                                                               completionHandler:completionHandler];
-            }
+            [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
+                                                                     options:authOptions
+                                                                  categories:nil
+                                                           completionHandler:completionHandler];
         }
         else {
             UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
@@ -91,10 +90,8 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
                                                     UIUserNotificationTypeAlert
                                                                                      categories:nil];
             // Notify the SDK what user notification settings have been selected
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [[ETPush pushManager] registerUserNotificationSettings:settings];
-                [[ETPush pushManager] registerForRemoteNotifications];
-            }
+            [[ETPush pushManager] registerUserNotificationSettings:settings];
+            [[ETPush pushManager] registerForRemoteNotifications];
         }
         
         resolve(@"successful");
