@@ -2,6 +2,7 @@
 #import <React/RCTLog.h>
 #import "RNExactTarget.h"
 #import "ETPush.h"
+#import "ETAnalytics.h"
 
 @implementation RNExactTarget
 
@@ -47,10 +48,11 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
     NSError *error = nil;
     
     // Debug flags
-    #ifdef DEBUG
+#ifdef DEBUG
     [ETPush setETLoggerToRequiredState:YES];
-    #endif
+#endif
     
+    // Initialize SDK with SFMC AppID and AccessToken
     successful = [[ETPush pushManager] configureSDKWithAppID:appId
                                               andAccessToken:accessToken
                                                withAnalytics:withAnalytics
@@ -64,6 +66,38 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
         NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.", appId, accessToken];
         reject(@"sdk_init_error", errorMessage, nil);
     } else {
+        /** Register for push notifications - enable all notification types, no categories */
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
+            
+            // Preparing parameters
+            UNAuthorizationOptions authOptions = (UNAuthorizationOptionAlert
+                                                  + UNAuthorizationOptionBadge
+                                                  + UNAuthorizationOptionSound);
+            void (^completionHandler)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
+                NSLog(@"Registered for remote notifications: %d", granted);
+            };
+            
+            // Start registration to APNS to get a device token
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
+                                                                         options:authOptions
+                                                                      categories:nil
+                                                               completionHandler:completionHandler];
+            }
+        }
+        else {
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound |
+                                                    UIUserNotificationTypeAlert
+                                                                                     categories:nil];
+            // Notify the SDK what user notification settings have been selected
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerUserNotificationSettings:settings];
+                [[ETPush pushManager] registerForRemoteNotifications];
+            }
+        }
+        
         resolve(@"successful");
     }
 }
@@ -79,6 +113,22 @@ RCT_EXPORT_METHOD(shouldDisplayAlertViewIfPushReceived:(BOOL *)enabled) {
     [[ETPush pushManager] shouldDisplayAlertViewIfPushReceived:enabled];
 }
 
+// Wrapper for ETPush method for post-registration delegate methods
+- (void)didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    [[ETPush pushManager] didRegisterUserNotificationSettings:notificationSettings];
+}
+
+- (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // register device token to SFMC
+    [[ETPush pushManager] registerDeviceToken:deviceToken];
+}
+
+- (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    [[ETPush pushManager] applicationDidFailToRegisterForRemoteNotificationsWithError:error];
+    [ETAnalytics trackPageView:@"data://applicationDidFailToRegisterForRemoteNotificationsWithError" andTitle:[error localizedDescription] andItem:nil andSearch:nil];
+}
+
+// Handlers for received notification
 - (void)handleRemoteNotification:(NSDictionary *_Nullable)userInfo {
     if (hasListeners) {
         [self sendEventWithName:@"ET:PUSH_NOTIFICATION_RECEIVED" body:userInfo];
