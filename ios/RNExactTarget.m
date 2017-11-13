@@ -63,8 +63,8 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
                                                        error:&error];
     
     if (!successful) {
-        NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.", appId, accessToken];
-        reject(@"sdk_init_error", errorMessage, nil);
+        NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.\n%@", appId, accessToken, [error localizedDescription]];
+        reject(@"sdk_init_error", errorMessage, error);
     } else {
         /** Register for push notifications - enable all notification types, no categories */
         if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
