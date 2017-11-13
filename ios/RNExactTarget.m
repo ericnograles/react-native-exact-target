@@ -15,6 +15,20 @@
 #import "ETAnalytics.h"
 
 @implementation RNExactTarget
++ (instancetype)pushManager {
+    static RNExactTarget *sharedPushManager = nil;
+    @synchronized(self) {
+        if (sharedPushManager == nil) {
+            sharedPushManager = [[self alloc] init];
+        }
+    }
+    return sharedPushManager;
+}
+
+- (instancetype)init {
+    self = [super init];
+    return self;
+}
 
 bool hasListeners;
 
@@ -29,13 +43,13 @@ bool hasListeners;
 }
 
 // Will be called when this module's first listener is added.
--(void)startObserving {
+- (void)startObserving {
     hasListeners = YES;
     // Set up any upstream listeners or background tasks as necessary
 }
 
 // Will be called when this module's last listener is removed, or on dealloc.
--(void)stopObserving {
+- (void)stopObserving {
     hasListeners = NO;
     // Remove upstream listeners, stop unnecessary background tasks
 }
