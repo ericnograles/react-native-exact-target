@@ -83,7 +83,7 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
                                                                          options:authOptions
                                                                       categories:nil
                                                                completionHandler:completionHandler];
-            }
+            });
         }
         else {
             UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
@@ -95,7 +95,7 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [[ETPush pushManager] registerUserNotificationSettings:settings];
                 [[ETPush pushManager] registerForRemoteNotifications];
-            }
+            });
         }
         
         resolve(@"successful");
