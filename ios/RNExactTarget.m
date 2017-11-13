@@ -88,10 +88,12 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
             };
             
             // Start registration to APNS to get a device token
-            [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
-                                                                     options:authOptions
-                                                                  categories:nil
-                                                           completionHandler:completionHandler];
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
+                                                                         options:authOptions
+                                                                      categories:nil
+                                                               completionHandler:completionHandler];
+            });
         }
         else {
             UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
@@ -100,8 +102,10 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
                                                     UIUserNotificationTypeAlert
                                                                                      categories:nil];
             // Notify the SDK what user notification settings have been selected
-            [[ETPush pushManager] registerUserNotificationSettings:settings];
-            [[ETPush pushManager] registerForRemoteNotifications];
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerUserNotificationSettings:settings];
+                [[ETPush pushManager] registerForRemoteNotifications];
+            });
         }
         
         resolve(@"successful");
