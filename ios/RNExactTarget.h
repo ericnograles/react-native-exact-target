@@ -20,8 +20,8 @@
  Returns (or initializes) the shared pushManager instance.
  @return The singleton instance of an RNExactTarget pushManager.
  */
-+(nullable instancetype)pushManager;
--(instancetype _Nonnull)init;
++ (instancetype _Nullable)pushManager;
+- (instancetype _Nonnull)init;
 
 - (void)didRegisterUserNotificationSettings:(UIUserNotificationSettings *_Nonnull)notificationSettings;
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *_Nonnull)deviceToken;
@@ -30,4 +30,3 @@
 - (void)handleLocalNotification:(UILocalNotification *_Nullable)localNotification;
 
 @end
-  
