@@ -44,6 +44,37 @@ bool hasListeners;
     // Remove upstream listeners, stop unnecessary background tasks
 }
 
+- (void)registerUserNotification {
+    /** Register for push notifications - enable all notification types, no categories */
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
+        // Preparing parameters
+        UNAuthorizationOptions authOptions = (UNAuthorizationOptionAlert
+                                              + UNAuthorizationOptionBadge
+                                              + UNAuthorizationOptionSound);
+        void (^completionHandler)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
+            NSLog(@"Registered for remote notifications: %d", granted);
+        };
+        // Start registration to APNS to get a device token
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
+                                                                     options:authOptions
+                                                                  categories:nil
+                                                           completionHandler:completionHandler];
+        });
+    } else {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+                                                UIUserNotificationTypeBadge |
+                                                UIUserNotificationTypeSound |
+                                                UIUserNotificationTypeAlert
+                                                                                 categories:nil];
+        // Notify the SDK what user notification settings have been selected
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [[ETPush pushManager] registerUserNotificationSettings:settings];
+            [[ETPush pushManager] registerForRemoteNotifications];
+        });
+    }
+}
+
 RCT_EXPORT_MODULE();
 
 RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)etPushConfig resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
@@ -80,38 +111,9 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
         NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.\n%@", appId, accessToken, [error localizedDescription]];
         reject(@"sdk_init_error", errorMessage, error);
     } else {
-        /** Register for push notifications - enable all notification types, no categories */
-        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
-            
-            // Preparing parameters
-            UNAuthorizationOptions authOptions = (UNAuthorizationOptionAlert
-                                                  + UNAuthorizationOptionBadge
-                                                  + UNAuthorizationOptionSound);
-            void (^completionHandler)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
-                NSLog(@"Registered for remote notifications: %d", granted);
-            };
-            
-            // Start registration to APNS to get a device token
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
-                                                                         options:authOptions
-                                                                      categories:nil
-                                                               completionHandler:completionHandler];
-            });
+        if (!UIApplication.sharedApplication.registeredForRemoteNotifications) {
+            [self registerUserNotification];
         }
-        else {
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
-                                                    UIUserNotificationTypeBadge |
-                                                    UIUserNotificationTypeSound |
-                                                    UIUserNotificationTypeAlert
-                                                                                     categories:nil];
-            // Notify the SDK what user notification settings have been selected
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [[ETPush pushManager] registerUserNotificationSettings:settings];
-                [[ETPush pushManager] registerForRemoteNotifications];
-            });
-        }
-        
         resolve(@"successful");
     }
 }
@@ -156,3 +158,4 @@ RCT_EXPORT_METHOD(shouldDisplayAlertViewIfPushReceived:(BOOL *)enabled) {
 }
 
 @end
+
