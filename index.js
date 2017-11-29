@@ -46,7 +46,21 @@ export default {
           });
       }
     );
+  },
 
+  registerForRemoteNotifications: () => {
+    return new Promise(
+      (resolve, reject) => {
+        RNExactTarget
+          .registerForRemoteNotifications()
+          .then(resolve)
+          .catch(reject)
+      }
+    );
+  },
+
+  setSubscriberKey: (key) => {
+    RNExactTarget.setSubscriberKey(key);
   },
 
   resetBadgeCount: () => {
