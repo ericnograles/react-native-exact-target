@@ -44,8 +44,17 @@ bool hasListeners;
     // Remove upstream listeners, stop unnecessary background tasks
 }
 
-- (void)registerUserNotification {
+RCT_EXPORT_MODULE();
+
+RCT_REMAP_METHOD(registerForRemoteNotifications, registerForRemoteNotifications)
+{
+    if (UIApplication.sharedApplication.registeredForRemoteNotifications) {
+        RCTLogInfo(@"Remote notifications is already registered into APNS. We don't want to register it again.");
+        return;
+    }
+    
     /** Register for push notifications - enable all notification types, no categories */
+    RCTLogInfo(@"Registering for remote notifications");
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
         // Preparing parameters
         UNAuthorizationOptions authOptions = (UNAuthorizationOptionAlert
@@ -54,6 +63,7 @@ bool hasListeners;
         void (^completionHandler)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
             NSLog(@"Registered for remote notifications: %d", granted);
         };
+        
         // Start registration to APNS to get a device token
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
@@ -74,8 +84,6 @@ bool hasListeners;
         });
     }
 }
-
-RCT_EXPORT_MODULE();
 
 RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)etPushConfig resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -110,12 +118,9 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
     if (!successful) {
         NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.\n%@", appId, accessToken, [error localizedDescription]];
         reject(@"sdk_init_error", errorMessage, error);
-    } else {
-        if (!UIApplication.sharedApplication.registeredForRemoteNotifications) {
-            [self registerUserNotification];
-        }
-        resolve(@"successful");
     }
+    
+    resolve(@"successful");
 }
 
 RCT_EXPORT_METHOD(resetBadgeCount)
