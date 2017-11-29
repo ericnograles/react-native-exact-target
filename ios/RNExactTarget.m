@@ -123,6 +123,12 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
     resolve(@"successful");
 }
 
+RCT_EXPORT_METHOD(setSubscriberKey:(nonnull NSString*) key)
+{
+    RCTLogInfo(@"Setting subscriber key to SFMC: %s", key);
+    [[ETPush pushManager] setSubscriberKey:key];
+}
+
 RCT_EXPORT_METHOD(resetBadgeCount)
 {
     RCTLogInfo(@"Resetting badge count");
