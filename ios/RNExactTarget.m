@@ -22,6 +22,8 @@
 
 bool hasListeners;
 
+bool isSdkInitialized = NO;
+
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[@"ET:PUSH_NOTIFICATION_RECEIVED", @"ET:LOCAL_NOTIFICATION_RECEIVED"];
@@ -106,18 +108,25 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
 #endif
     
     // Initialize SDK with SFMC AppID and AccessToken
-    successful = [[ETPush pushManager] configureSDKWithAppID:appId
-                                              andAccessToken:accessToken
-                                               withAnalytics:withAnalytics
-                                         andLocationServices:andLocationServices
-                                        andProximityServices:andProximityServices
-                                               andCloudPages:andCloudPages
-                                             withPIAnalytics:withAnalytics
-                                                       error:&error];
-    
-    if (!successful) {
-        NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.\n%@", appId, accessToken, [error localizedDescription]];
-        reject(@"sdk_init_error", errorMessage, error);
+    if (!isSdkInitialized) {
+        successful = [[ETPush pushManager] configureSDKWithAppID:appId
+                                                  andAccessToken:accessToken
+                                                   withAnalytics:withAnalytics
+                                             andLocationServices:andLocationServices
+                                            andProximityServices:andProximityServices
+                                                   andCloudPages:andCloudPages
+                                                 withPIAnalytics:withAnalytics
+                                                           error:&error];
+        
+        if (!successful) {
+            NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.\n%@", appId, accessToken, [error localizedDescription]];
+            reject(@"sdk_init_error", errorMessage, error);
+        }
+        
+        isSdkInitialized = YES;
+        RCTLogInfo(@"Initializing ETPush succeeded.", appId, accessToken);
+    } else {
+        RCTLogInfo(@"ETPush has already been initialized.", appId, accessToken);
     }
     
     resolve(@"successful");
