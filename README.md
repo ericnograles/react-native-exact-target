@@ -144,7 +144,32 @@ allprojects {
 
 Typically, you'll want to initialize ExactTarget on the `componentDidMount` of your App.js, like so:
 
-#### iOS
+#### Versions Prior to 0.3.x
+
+```jsx
+import ExactTarget from 'react-native-exact-target';
+
+componentDidMount() {
+        ExactTarget
+          .initializePushManager({
+            appId: 'test-app-id-ios',
+            accessToken: 'test-access-token-ios',
+            enableAnalytics: false,
+            enableLocationServices: false,
+            enableProximityServices: false,
+            enableCloudPages: false,
+            enablePIAnalytics: false
+          })
+          .catch(error => {
+            console.log('There has been an error');
+            console.error(error);
+          });
+}
+```
+
+#### 0.3.x
+
+##### iOS
 
 ```jsx
 import ExactTarget from 'react-native-exact-target';
@@ -170,7 +195,7 @@ componentDidMount() {
 }
 ```
 
-#### Android
+##### Android
 
 ```jsx
 import ExactTarget from 'react-native-exact-target';
