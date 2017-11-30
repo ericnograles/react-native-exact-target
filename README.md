@@ -143,6 +143,34 @@ allprojects {
 
 Typically, you'll want to initialize ExactTarget on the `componentDidMount` of your App.js, like so:
 
+#### iOS
+
+```jsx
+import ExactTarget from 'react-native-exact-target';
+
+componentDidMount() {
+        ExactTarget
+          .initializePushManager({
+            appId: 'test-app-id-ios',
+            accessToken: 'test-access-token-ios',
+            enableAnalytics: false,
+            enableLocationServices: false,
+            enableProximityServices: false,
+            enableCloudPages: false,
+            enablePIAnalytics: false
+          })
+          .catch(error => {
+            console.log('There has been an error');
+            console.error(error);
+          });
+        
+        // This is to register the app on APNs, this bit isn't needed for GCM on Android
+        ExactTarget.registerForRemoteNotifications();
+}
+```
+
+#### Android
+
 ```jsx
 import ExactTarget from 'react-native-exact-target';
 
