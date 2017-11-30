@@ -58,6 +58,7 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
   private static ETPush etPush;
   private final ReactApplicationContext reactContext;
   private boolean enableLocationServices = false;
+  private boolean hasSdkInitialized = false;
 
   public RNExactTargetModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -86,24 +87,30 @@ public class RNExactTargetModule extends ReactContextBaseJavaModule implements E
     enableLocationServices = config.getBoolean("enableLocationServices");
 
     // ExactTarget registration
-    EventBus.getInstance().register(this);
-    try {
-      ETPush.configureSdk(new ETPushConfig.Builder(this.mainApplication)
-                      .setEtAppId(appId)
-                      .setAccessToken(accessToken)
-                      .setGcmSenderId(gcmSenderId)
-                      .setLogLevel(Log.VERBOSE)
-                      .setAnalyticsEnabled(enableAnalytics)
-                      .setLocationEnabled(enableLocationServices)
-                      .setPiAnalyticsEnabled(enablePIAnalytics)
-                      .setCloudPagesEnabled(enableCloudPages)
-                      .setProximityEnabled(enableProximityServices)
-                      .build()
-              , this);
+    if (!hasSdkInitialized) {
+      EventBus.getInstance().register(this);
+      try {
+        ETPush.configureSdk(new ETPushConfig.Builder(this.mainApplication)
+                        .setEtAppId(appId)
+                        .setAccessToken(accessToken)
+                        .setGcmSenderId(gcmSenderId)
+                        .setLogLevel(Log.VERBOSE)
+                        .setAnalyticsEnabled(enableAnalytics)
+                        .setLocationEnabled(enableLocationServices)
+                        .setPiAnalyticsEnabled(enablePIAnalytics)
+                        .setCloudPagesEnabled(enableCloudPages)
+                        .setProximityEnabled(enableProximityServices)
+                        .build()
+                , this);
+        hasSdkInitialized = true;
+        promise.resolve(true);
+      } catch (ETException e) {
+        Log.e(TAG, e.getMessage(), e);
+        promise.reject(TAG, e.getMessage());
+      }
+    } else {
+      Log.i(TAG, "SDK has already been initialized prior");
       promise.resolve(true);
-    } catch (ETException e) {
-      Log.e(TAG, e.getMessage(), e);
-      promise.reject(TAG, e.getMessage());
     }
   }
 
