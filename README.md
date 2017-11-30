@@ -11,6 +11,7 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
 | 0.0.x+ | < 0.40 | 4.7.1 | 4.7.0.x | 
 | 0.1.3+ | > 0.40 and <= 0.46 | 4.7.1 | 4.7.0.x |
 | 0.2.0+ | >= 0.47 | 4.7.1 | 4.7.0.x |
+| 0.3.x | >= 0.47 | 4.7.1 | 4.7.0.x |
 
 **Note**: Please ignore v0.1.0 - v0.1.2. Incorrect semver was followed here and these releases are therefore deprecated.
 
@@ -143,6 +144,8 @@ allprojects {
 
 Typically, you'll want to initialize ExactTarget on the `componentDidMount` of your App.js, like so:
 
+#### Versions Prior to 0.3.x
+
 ```jsx
 import ExactTarget from 'react-native-exact-target';
 
@@ -161,6 +164,36 @@ componentDidMount() {
             console.log('There has been an error');
             console.error(error);
           });
+}
+```
+
+#### 0.3.x and Future Releases
+
+```jsx
+import { Platform } from 'react-native';
+import ExactTarget from 'react-native-exact-target';
+
+
+componentDidMount() {
+        ExactTarget
+          .initializePushManager({
+            appId: 'test-app-id-ios',
+            accessToken: 'test-access-token-ios',
+            enableAnalytics: false,
+            enableLocationServices: false,
+            enableProximityServices: false,
+            enableCloudPages: false,
+            enablePIAnalytics: false
+          })
+          .catch(error => {
+            console.log('There has been an error');
+            console.error(error);
+          });
+        
+        // This is to register the app on APNs, this bit isn't needed for GCM on Android
+        if (Platform.OS === 'ios') {
+            ExactTarget.registerForRemoteNotifications();
+        }
 }
 ```
 
