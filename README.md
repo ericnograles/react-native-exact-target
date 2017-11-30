@@ -167,12 +167,12 @@ componentDidMount() {
 }
 ```
 
-#### 0.3.x
-
-##### iOS
+#### 0.3.x and Future Releases
 
 ```jsx
+import { Platform } from 'react-native';
 import ExactTarget from 'react-native-exact-target';
+
 
 componentDidMount() {
         ExactTarget
@@ -191,30 +191,9 @@ componentDidMount() {
           });
         
         // This is to register the app on APNs, this bit isn't needed for GCM on Android
-        ExactTarget.registerForRemoteNotifications();
-}
-```
-
-##### Android
-
-```jsx
-import ExactTarget from 'react-native-exact-target';
-
-componentDidMount() {
-        ExactTarget
-          .initializePushManager({
-            appId: 'test-app-id-ios',
-            accessToken: 'test-access-token-ios',
-            enableAnalytics: false,
-            enableLocationServices: false,
-            enableProximityServices: false,
-            enableCloudPages: false,
-            enablePIAnalytics: false
-          })
-          .catch(error => {
-            console.log('There has been an error');
-            console.error(error);
-          });
+        if (Platform.OS === 'ios') {
+            ExactTarget.registerForRemoteNotifications();
+        }
 }
 ```
 
