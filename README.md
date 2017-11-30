@@ -11,6 +11,7 @@ react-native-exact-target provides bridging functionality to Salesforce Marketin
 | 0.0.x+ | < 0.40 | 4.7.1 | 4.7.0.x | 
 | 0.1.3+ | > 0.40 and <= 0.46 | 4.7.1 | 4.7.0.x |
 | 0.2.0+ | >= 0.47 | 4.7.1 | 4.7.0.x |
+| 0.3.x | >= 0.47 | 4.7.1 | 4.7.0.x |
 
 **Note**: Please ignore v0.1.0 - v0.1.2. Incorrect semver was followed here and these releases are therefore deprecated.
 
