@@ -22,6 +22,8 @@
 
 bool hasListeners;
 
+bool hasSdkInitialized = NO;
+
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[@"ET:PUSH_NOTIFICATION_RECEIVED", @"ET:LOCAL_NOTIFICATION_RECEIVED"];
@@ -46,6 +48,51 @@ bool hasListeners;
 
 RCT_EXPORT_MODULE();
 
+RCT_REMAP_METHOD(registerForRemoteNotifications, registerForRemoteNotificationsWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    if (UIApplication.sharedApplication.registeredForRemoteNotifications) {
+        RCTLogInfo(@"Remote notifications is already registered into APNS. We don't want to register it again.");
+        return;
+    }
+    
+    /** Register for push notifications - enable all notification types, no categories */
+    RCTLogInfo(@"Registering for remote notifications");
+    @try {
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
+            // Preparing parameters
+            UNAuthorizationOptions authOptions = (UNAuthorizationOptionAlert
+                                                  + UNAuthorizationOptionBadge
+                                                  + UNAuthorizationOptionSound);
+            void (^completionHandler)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
+                NSLog(@"Registered for remote notifications: %d", granted);
+            };
+            
+            // Start registration to APNS to get a device token
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
+                                                                         options:authOptions
+                                                                      categories:nil
+                                                               completionHandler:completionHandler];
+            });
+        } else {
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound |
+                                                    UIUserNotificationTypeAlert
+                                                                                     categories:nil];
+            // Notify the SDK what user notification settings have been selected
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[ETPush pushManager] registerUserNotificationSettings:settings];
+                [[ETPush pushManager] registerForRemoteNotifications];
+            });
+        }
+    } @catch (NSException *exception) {
+        reject(@"apns_init_error", @"Error in registration for remote notifications", exception);
+    }
+    
+    resolve(@"Registration for remote notifications fired");
+}
+
 RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)etPushConfig resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSString *appId = [RCTConvert NSString:etPushConfig[@"appId"]];
@@ -67,53 +114,34 @@ RCT_REMAP_METHOD(initializePushManager, initializePushManager:(NSDictionary *)et
 #endif
     
     // Initialize SDK with SFMC AppID and AccessToken
-    successful = [[ETPush pushManager] configureSDKWithAppID:appId
-                                              andAccessToken:accessToken
-                                               withAnalytics:withAnalytics
-                                         andLocationServices:andLocationServices
-                                        andProximityServices:andProximityServices
-                                               andCloudPages:andCloudPages
-                                             withPIAnalytics:withAnalytics
-                                                       error:&error];
-    
-    if (!successful) {
-        NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.\n%@", appId, accessToken, [error localizedDescription]];
-        reject(@"sdk_init_error", errorMessage, error);
-    } else {
-        /** Register for push notifications - enable all notification types, no categories */
-        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
-            
-            // Preparing parameters
-            UNAuthorizationOptions authOptions = (UNAuthorizationOptionAlert
-                                                  + UNAuthorizationOptionBadge
-                                                  + UNAuthorizationOptionSound);
-            void (^completionHandler)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
-                NSLog(@"Registered for remote notifications: %d", granted);
-            };
-            
-            // Start registration to APNS to get a device token
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [[ETPush pushManager] registerForRemoteNotificationsWithDelegate:self
-                                                                         options:authOptions
-                                                                      categories:nil
-                                                               completionHandler:completionHandler];
-            });
-        }
-        else {
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
-                                                    UIUserNotificationTypeBadge |
-                                                    UIUserNotificationTypeSound |
-                                                    UIUserNotificationTypeAlert
-                                                                                     categories:nil];
-            // Notify the SDK what user notification settings have been selected
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [[ETPush pushManager] registerUserNotificationSettings:settings];
-                [[ETPush pushManager] registerForRemoteNotifications];
-            });
+    if (!hasSdkInitialized) {
+        successful = [[ETPush pushManager] configureSDKWithAppID:appId
+                                                  andAccessToken:accessToken
+                                                   withAnalytics:withAnalytics
+                                             andLocationServices:andLocationServices
+                                            andProximityServices:andProximityServices
+                                                   andCloudPages:andCloudPages
+                                                 withPIAnalytics:withAnalytics
+                                                           error:&error];
+        
+        if (!successful) {
+            NSString *errorMessage = [NSString stringWithFormat: @"Could not initialize JB4A-SDK with appId %@ and accesstoken %@. Please check your configuration.\n%@", appId, accessToken, [error localizedDescription]];
+            reject(@"sdk_init_error", errorMessage, error);
         }
         
-        resolve(@"successful");
+        hasSdkInitialized = YES;
+        RCTLogInfo(@"Initializing ETPush succeeded.", appId, accessToken);
+    } else {
+        RCTLogInfo(@"ETPush has already been initialized.", appId, accessToken);
     }
+    
+    resolve(@"successful");
+}
+
+RCT_EXPORT_METHOD(setSubscriberKey:(nonnull NSString*) key)
+{
+    RCTLogInfo(@"Setting subscriber key to SFMC: %s", key);
+    [[ETPush pushManager] setSubscriberKey:key];
 }
 
 RCT_EXPORT_METHOD(resetBadgeCount)
@@ -156,3 +184,4 @@ RCT_EXPORT_METHOD(shouldDisplayAlertViewIfPushReceived:(BOOL *)enabled) {
 }
 
 @end
+
