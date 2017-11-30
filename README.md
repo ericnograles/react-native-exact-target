@@ -185,15 +185,16 @@ componentDidMount() {
             enableCloudPages: false,
             enablePIAnalytics: false
           })
+          .then(() => {
+            // This is to register the app on APNs, this bit isn't needed for GCM on Android
+            if (Platform.OS === 'ios') {
+                ExactTarget.registerForRemoteNotifications();
+            }
+          })
           .catch(error => {
             console.log('There has been an error');
             console.error(error);
           });
-        
-        // This is to register the app on APNs, this bit isn't needed for GCM on Android
-        if (Platform.OS === 'ios') {
-            ExactTarget.registerForRemoteNotifications();
-        }
 }
 ```
 
