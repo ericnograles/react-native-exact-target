@@ -8,16 +8,11 @@ Please follow the guidelines below.  If you have any questions, please reach out
 
 ## Local Development
 
-1. Clone this repo
-1. Clone the [Example App](https://github.com/ericnograles/react-native-exact-target-example-app)
-1. In the root of this repo, type in `npm install` or `yarn install` to bring down dependencies
-1. In the root of this repo, type in `npm link` to create a local symlink
-1. In a terminal, go to the root of the Example App's repo
-1. Execute `git checkout local_development`
-1. Execute `npm link react-native-exact-target`
-1. Execute `npm install` or `yarn install` to bring down the Example App's dependencies
+1. Open a terminal
+1. `mkdir react-native-exact-target-dev`
+1. `cd react-native-exact-target-dev && git clone https://github.com/ericnograles/react-native-exact-target.git && git clone https://github.com/ericnograles/react-native-exact-target-example-app.git && cd react-native-exact-target-example-app && git checkout local_development && yarn install` 
 
-You can now develop locally and have the changes reflected in your Example App without constantly rebuilding
+**Note**: Symlinks don't play well with React Native, so for every change in `react-native-exact-target` you will need to re-run `yarn install` in `react-native-exact-target-example-app`
 
 ## PR Process
 
