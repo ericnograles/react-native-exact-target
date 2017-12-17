@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7BA677B449B320229E19A58F /* libPods-RNExactTarget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2375CF0D5DC1C475FCC3F3 /* libPods-RNExactTarget.a */; };
 		7FD06B981E902D2E0020EEAE /* libJB4ASDK-4.7.0.020600001.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FD06B931E902D2E0020EEAE /* libJB4ASDK-4.7.0.020600001.a */; };
 		B3E7B58A1CC2AC0600A0062D /* RNExactTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNExactTarget.m */; };
 /* End PBXBuildFile section */
@@ -24,7 +25,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D2375CF0D5DC1C475FCC3F3 /* libPods-RNExactTarget.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNExactTarget.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134814201AA4EA6300B7C361 /* libRNExactTarget.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNExactTarget.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E2EAE6C448D9F11E71A5EE4 /* Pods-RNExactTarget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNExactTarget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNExactTarget/Pods-RNExactTarget.debug.xcconfig"; sourceTree = "<group>"; };
 		7FD06B841E902D2E0020EEAE /* ETAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETAnalytics.h; sourceTree = "<group>"; };
 		7FD06B851E902D2E0020EEAE /* ETCloudPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETCloudPage.h; sourceTree = "<group>"; };
 		7FD06B861E902D2E0020EEAE /* ETCloudPageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETCloudPageDataSource.h; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		7FD06B971E902D2E0020EEAE /* PushConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushConstants.h; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RNExactTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNExactTarget.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNExactTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNExactTarget.m; sourceTree = "<group>"; };
+		C068A7E48BAA2156FCAE68BD /* Pods-RNExactTarget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNExactTarget.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNExactTarget/Pods-RNExactTarget.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FD06B981E902D2E0020EEAE /* libJB4ASDK-4.7.0.020600001.a in Frameworks */,
+				7BA677B449B320229E19A58F /* libPods-RNExactTarget.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +81,8 @@
 				B3E7B5881CC2AC0600A0062D /* RNExactTarget.h */,
 				B3E7B5891CC2AC0600A0062D /* RNExactTarget.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				E45F2BF932DA919DDF20ADBC /* Pods */,
+				C30A2D51B5AD81291E56CC8D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -106,6 +113,23 @@
 			path = "JB4A-SDK";
 			sourceTree = "<group>";
 		};
+		C30A2D51B5AD81291E56CC8D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0D2375CF0D5DC1C475FCC3F3 /* libPods-RNExactTarget.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E45F2BF932DA919DDF20ADBC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5E2EAE6C448D9F11E71A5EE4 /* Pods-RNExactTarget.debug.xcconfig */,
+				C068A7E48BAA2156FCAE68BD /* Pods-RNExactTarget.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -113,9 +137,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNExactTarget" */;
 			buildPhases = (
+				48265F1C832F323CD17212F8 /* [CP] Check Pods Manifest.lock */,
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
+				28D93EFE5DC2152A03367A7F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -156,6 +182,42 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		28D93EFE5DC2152A03367A7F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RNExactTarget/Pods-RNExactTarget-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		48265F1C832F323CD17212F8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNExactTarget-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
@@ -245,6 +307,7 @@
 		};
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5E2EAE6C448D9F11E71A5EE4 /* Pods-RNExactTarget.debug.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -264,6 +327,7 @@
 		};
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C068A7E48BAA2156FCAE68BD /* Pods-RNExactTarget.release.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
